@@ -43,11 +43,16 @@ new Command({
                 ])
                 .setColor("#5D3FD3")
             ctx.reply({ embeds: [embed], ephemeral: true})
-            } else {
+            } else if (user.status == 404) {
                 const err = new Discord.EmbedBuilder()
                 .setTitle("User not found")
                 .setColor("#FF9494")
             ctx.reply({ embeds: [err], ephemeral: true})
+           } else if (user.status == 401) {
+            const err = new Discord.EmbedBuilder()
+            .setTitle("API: Invalid API Key")
+            .setColor("#FF9494")
+        ctx.reply({ embeds: [err], ephemeral: true})
            }
         } else {
             const err = new Discord.EmbedBuilder()

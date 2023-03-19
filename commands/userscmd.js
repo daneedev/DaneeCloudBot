@@ -14,6 +14,7 @@ new Command({
             }
         })
         if (ctx.member.permissions.has(process.env.admin_perm)) {
+            if (users.status == 200) {
             let usernames = ""
             for (let user of users.data) {
                 usernames = usernames + `\n**${user.username}** | ${user.email} `
@@ -23,6 +24,12 @@ new Command({
                 .setColor("#5D3FD3")
                 .setDescription(usernames)
             ctx.reply({ embeds: [embed], ephemeral: true})
+        } else if (user.status == 401) {
+            const err = new Discord.EmbedBuilder()
+            .setTitle("API: Invalid API Key")
+            .setColor("#FF9494")
+        ctx.reply({ embeds: [err], ephemeral: true})
+        }
         } else {
             const err = new Discord.EmbedBuilder()
                 .setTitle("You have no permission to do that.")
