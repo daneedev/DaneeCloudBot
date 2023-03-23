@@ -15,7 +15,7 @@ new Command({
         }),
         new Argument({
             name: "maxstorage",
-            description: "Max storage",
+            description: "Max storage (In MB)",
             type: ArgumentType.NUMBER,
             required: true
         }),
