@@ -19,12 +19,24 @@ new Command({
             type: ArgumentType.NUMBER,
             required: true
         }),
+        new Argument({
+            name: "badgeurl",
+            description: "URL of badge",
+            type: ArgumentType.STRING,
+            required: true
+        })
     ],
 	run: async (ctx) => {
 		const name = ctx.arguments.getString("name")
         const maxStorage = ctx.arguments.getNumber("maxstorage")
+        const badgeurl = ctx.arguments.getString("badgeurl")
         if (ctx.member.permissions.has(process.env.admin_perm)) {
-            const addrole = await axios.post(process.env.cloud_url + `/api/role/create?name=${name}&maxStorage=${maxStorage.toString()}`, {}, {
+            const addrole = await axios.post(process.env.cloud_url + `/api/role/create`, {}, {
+                params: {
+                    name: name,
+                    maxStorage: maxStorage.toString(),
+                    badge: badgeurl
+                },
                 headers: { "API-Key" : process.env.api_key},
                 validateStatus: function (status) {
                     return status < 500; // Resolve only if the status code is less than 500
