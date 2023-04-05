@@ -25,13 +25,26 @@ new Command({
             type: ArgumentType.NUMBER,
             required: true
         }),
+        new Argument({
+            name: "badgeurl",
+            description: "New URL of badge",
+            type: ArgumentType.STRING,
+            required: true
+        }),
     ],
 	run: async (ctx) => {
 		const rolename = ctx.arguments.getString("name")
         const newname = ctx.arguments.getString("newname")
         const maxStorage = ctx.arguments.getNumber("maxstorage")
+        const badgeurl = ctx.arguments.getString("badgeurl")
         if (ctx.member.permissions.has(process.env.admin_perm)) {
-            const editrole = await axios.post(process.env.cloud_url + `/api/role/edit?name=${rolename}&newname=${newname}&maxStorage=${maxStorage.toString()}`, {}, {
+            const editrole = await axios.post(process.env.cloud_url + `/api/role/edit`, {}, {
+                params: {
+                    name: rolename,
+                    newname: newname,
+                    maxStorage: maxStorage.toString(),
+                    badge: badgeurl
+                },
                 headers: { "API-Key" : process.env.api_key},
                 validateStatus: function (status) {
                     return status < 500; // Resolve only if the status code is less than 500
@@ -43,7 +56,8 @@ new Command({
                 .addFields(
                     { name: "Old name", value: rolename, inline: true},
                     { name: "New name", value: newname, inline: true},
-                    { name: "New maxStorage", value: `${maxStorage.toString()} MB`, inline: true}
+                    { name: "New maxStorage", value: `${maxStorage.toString()} MB`, inline: true},
+                    { name: "New badge URL", value: badgeurl, inline: true}
                 )
                 .setColor("#5D3FD3")
             ctx.reply({ embeds: [embed], ephemeral: true})
