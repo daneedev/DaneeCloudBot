@@ -1,2 +1,2 @@
 # DaneeCloudBot
-DaneeCloud addon: Discord Bot
+- DaneeCloud addon: Discord Bot
