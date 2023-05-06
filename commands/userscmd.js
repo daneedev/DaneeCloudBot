@@ -1,6 +1,6 @@
 const { Command, CommandType, Argument, ArgumentType } = require('gcommands');
 const Discord = require("discord.js")
-const axios = require("axios")
+const cloud = require("../index")
 
 new Command({
 	name: 'users',

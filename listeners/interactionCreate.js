@@ -1,6 +1,6 @@
 const { Listener } = require('gcommands');
 const Discord = require("discord.js")
-const axios = require("axios")
+const cloud = require("../index")
 
 new Listener({
 	name: 'interactionCreate',

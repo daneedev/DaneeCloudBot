@@ -1,7 +1,7 @@
 const { Command, CommandType } = require('gcommands');
 const Discord = require("discord.js")
 const request = require("request")
-const axios = require("axios")
+const cloud = require("../index")
 const packages = require("../package.json")
 
 new Command({
