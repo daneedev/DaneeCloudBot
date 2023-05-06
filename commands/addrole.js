@@ -1,6 +1,10 @@
 const { Command, CommandType, Argument, ArgumentType } = require('gcommands');
 const Discord = require("discord.js")
-const axios = require("axios")
+const {Cloud} = require("daneecloud-api")
+const cloud = Cloud({
+	cloudUrl: process.env.cloud_url,
+	apiKey: process.env.api_key
+})
 
 new Command({
 	name: 'addrole',
@@ -31,29 +35,19 @@ new Command({
         const maxStorage = ctx.arguments.getNumber("maxstorage")
         const badgeurl = ctx.arguments.getString("badgeurl")
         if (ctx.member.permissions.has(process.env.admin_perm)) {
-            const addrole = await axios.post(process.env.cloud_url + `/api/role/create`, {}, {
-                params: {
-                    name: name,
-                    maxStorage: maxStorage.toString(),
-                    badge: badgeurl
-                },
-                headers: { "API-Key" : process.env.api_key},
-                validateStatus: function (status) {
-                    return status < 500; // Resolve only if the status code is less than 500
-                }
-            })
-            if (addrole.status == 201) {
+            const addrole = await cloud.createRole(name, maxStorage, badgeurl)
+            if (addrole.code == 201) {
             const embed = new Discord.EmbedBuilder()
                 .setTitle(`Role ${name} has been created`)
                 .setColor("#5D3FD3")
             ctx.reply({ embeds: [embed], ephemeral: true})
-            } else if (addrole.status == 409) {
+            } else if (addrole.code == 409) {
                     const err = new Discord.EmbedBuilder()
                     .setTitle("Role already exist")
                     .setColor("#FF9494")
                 ctx.reply({ embeds: [err], ephemeral: true})
             
-           } else if (addrole.status == 401) {
+           } else if (addrole.code == 401) {
             const err = new Discord.EmbedBuilder()
             .setTitle("API: Invalid API Key")
             .setColor("#FF9494")
