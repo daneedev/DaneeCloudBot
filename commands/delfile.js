@@ -28,19 +28,14 @@ new Command({
 		const username = ctx.arguments.getString("username")
         const file = ctx.arguments.getString("filename")
         if (ctx.member.permissions.has(process.env.admin_perm)) {
-            const delfile = await axios.post(process.env.cloud_url + `/api/files/delete?username=${username}&file=${file}`, {}, {
-                headers: { "API-Key" : process.env.api_key},
-                validateStatus: function (status) {
-                    return status < 500; // Resolve only if the status code is less than 500
-                }
-            })
-            if (delfile.status == 200) {
+            const delfile = await cloud.deleteFile(username, file)
+            if (delfile.code == 200) {
             const embed = new Discord.EmbedBuilder()
                 .setTitle(`File ${file} has been deleted`)
                 .setColor("#5D3FD3")
             ctx.reply({ embeds: [embed], ephemeral: true})
-            } else if (delfile.status == 404) {
-                if (delfile.data.error == "Error 404 - File not found") {
+            } else if (delfile.code == 404) {
+                if (delfile.data == "File not found") {
                     const err = new Discord.EmbedBuilder()
                     .setTitle("File not found")
                     .setColor("#FF9494")
@@ -51,7 +46,7 @@ new Command({
                     .setColor("#FF9494")
                 ctx.reply({ embeds: [err], ephemeral: true})
                 }
-           } else if (delfile.status == 401) {
+           } else if (delfile.code == 401) {
             const err = new Discord.EmbedBuilder()
             .setTitle("API: Invalid API Key")
             .setColor("#FF9494")

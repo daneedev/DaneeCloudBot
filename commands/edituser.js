@@ -42,13 +42,8 @@ new Command({
         const newpassword = ctx.arguments.getString("newpassword")
         const newemail = ctx.arguments.getString("newemail")
         if (ctx.member.permissions.has(process.env.admin_perm)) {
-            const user = await axios.post(process.env.cloud_url + `/api/user/edit?username=${username}&newusername=${newusername}&newemail=${newemail}&newpassword=${newpassword}`, {}, {
-                headers: { "API-Key" : process.env.api_key},
-                validateStatus: function (status) {
-                    return status < 500; // Resolve only if the status code is less than 500
-                }
-            })
-            if (user.status == 201) {
+            const user = await cloud.editUser(username, newusername, newemail, newpassword)
+            if (user.code == 201) {
             const embed = new Discord.EmbedBuilder()
                 .setTitle(`User ${username} has been edited`)
                 .addFields(
@@ -58,12 +53,12 @@ new Command({
                 )
                 .setColor("#5D3FD3")
             ctx.reply({ embeds: [embed], ephemeral: true})
-            } else if (user.status == 404) {
+            } else if (user.code == 404) {
                 const err = new Discord.EmbedBuilder()
                 .setTitle("User not found")
                 .setColor("#FF9494")
             ctx.reply({ embeds: [err], ephemeral: true})
-           } else if (user.status == 401) {
+           } else if (user.code == 401) {
             const err = new Discord.EmbedBuilder()
             .setTitle("API: Invalid API Key")
             .setColor("#FF9494")

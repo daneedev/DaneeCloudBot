@@ -15,18 +15,13 @@ new Listener({
             const username = interaction.fields.getField("usernameInput").value
             const email = interaction.fields.getField("emailInput").value
             const password = interaction.fields.getField("passwordInput").value
-            const createUser = await axios.post(process.env.cloud_url + `/api/user/create?username=${username}&password=${password}&email=${email}`, {}, {
-                    headers: { "API-Key" : process.env.api_key},
-                    validateStatus: function (status) {
-                        return status < 500; // Resolve only if the status code is less than 500
-                    }
-                })
-                if (createUser.status == 401) {
+            const createUser = await cloud.createUser(username, email, password)
+                if (createUser.code == 401) {
                     const errorembed = new Discord.EmbedBuilder()
                     .setColor("#FF9494")
                     .setTitle("API: Invalid API Key")
                     interaction.reply({embeds: [errorembed], ephemeral: true})
-                } else if (createUser.status == 409) {
+                } else if (createUser.code == 409) {
                     const errorembed = new Discord.EmbedBuilder()
                     .setColor("#FF9494")
                     .setTitle("User already exist")

@@ -35,13 +35,8 @@ new Command({
         const file = ctx.arguments.getString("filename")
         const newfile = ctx.arguments.getString("newfilename")
         if (ctx.member.permissions.has(process.env.admin_perm)) {
-            const renfile = await axios.post(process.env.cloud_url + `/api/files/rename?username=${username}&file=${file}&newname=${newfile}`, {}, {
-                headers: { "API-Key" : process.env.api_key},
-                validateStatus: function (status) {
-                    return status < 500; // Resolve only if the status code is less than 500
-                }
-            })
-            if (renfile.status == 201) {
+            const renfile = await cloud.renameFile(username, file, newfile)
+            if (renfile.code == 201) {
             const embed = new Discord.EmbedBuilder()
                 .setTitle(`File ${file} has been renamed`)
                 .addFields(
@@ -50,8 +45,8 @@ new Command({
                 )
                 .setColor("#5D3FD3")
             ctx.reply({ embeds: [embed], ephemeral: true})
-            } else if (renfile.status == 404) {
-                if (renfile.data.error == "Error 404 - File not found") {
+            } else if (renfile.code == 404) {
+                if (renfile.data == "File not found") {
                     const err = new Discord.EmbedBuilder()
                     .setTitle("File not found")
                     .setColor("#FF9494")
@@ -62,7 +57,7 @@ new Command({
                     .setColor("#FF9494")
                 ctx.reply({ embeds: [err], ephemeral: true})
                 }
-           } else if (renfile.status == 401) {
+           } else if (renfile.code == 401) {
             const err = new Discord.EmbedBuilder()
             .setTitle("API: Invalid API Key")
             .setColor("#FF9494")
