@@ -1,6 +1,10 @@
 const { Command, CommandType, Argument, ArgumentType } = require('gcommands');
 const Discord = require("discord.js")
-const axios = require("axios")
+const {Cloud} = require("daneecloud-api")
+const cloud = Cloud({
+	cloudUrl: process.env.cloud_url,
+	apiKey: process.env.api_key
+})
 const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require("discord.js")
 
 new Command({

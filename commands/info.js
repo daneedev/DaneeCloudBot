@@ -1,7 +1,11 @@
 const { Command, CommandType } = require('gcommands');
 const Discord = require("discord.js")
 const request = require("request")
-const axios = require("axios")
+const {Cloud} = require("daneecloud-api")
+const cloud = Cloud({
+	cloudUrl: process.env.cloud_url,
+	apiKey: process.env.api_key
+})
 const packages = require("../package.json")
 
 new Command({
@@ -9,12 +13,7 @@ new Command({
 	description: 'Get info about bot and dash',
 	type: [CommandType.SLASH],
 	run: async (ctx) => {
-        const dash = await axios.get(process.env.cloud_url + `/api/dash/`, {
-            headers: { "API-Key" : process.env.api_key},
-            validateStatus: function (status) {
-                return status < 500; // Resolve only if the status code is less than 500
-            }
-        })
+        const dash = await cloud.getDashInfo()
         request.get("https://version.daneeskripter.dev/daneecloud/version.txt", function (error, response, body) {
         request.get("https://version.daneeskripter.dev/daneecloudbot/version.txt", function (error2, response2, body2) {
         const embed = new Discord.EmbedBuilder()

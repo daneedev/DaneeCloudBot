@@ -1,6 +1,10 @@
 const { Command, CommandType, Argument, ArgumentType } = require('gcommands');
 const Discord = require("discord.js")
-const axios = require("axios")
+const {Cloud} = require("daneecloud-api")
+const cloud = Cloud({
+	cloudUrl: process.env.cloud_url,
+	apiKey: process.env.api_key
+})
 
 new Command({
 	name: 'files',
@@ -16,14 +20,9 @@ new Command({
     ],
 	run: async (ctx) => {
         const username = ctx.arguments.getString("username")
-        const files = await axios.get(process.env.cloud_url + `/api/files?username=${username}`, {
-            headers: { "API-Key" : process.env.api_key},
-            validateStatus: function (status) {
-                return status < 500; // Resolve only if the status code is less than 500
-            }
-        })
+        const files = await cloud.getFiles(username)
         if (ctx.member.permissions.has(process.env.admin_perm)) {
-            if (files.status == 200) {
+            if (files.code == 200) {
             let allfiles = ""
             for (let file of files.data.files) {
                 allfiles = allfiles + `\n**${file}**`
@@ -33,13 +32,13 @@ new Command({
                 .setColor("#5D3FD3")
                 .setDescription(allfiles)
             ctx.reply({ embeds: [embed], ephemeral: true})
-        } else if (files.status == 404) {
+        } else if (files.code == 404) {
                 const err = new Discord.EmbedBuilder()
                 .setTitle("User not found")
                 .setColor("#FF9494")
             ctx.reply({ embeds: [err], ephemeral: true})
         
-        } else if (files.status == 401) {
+        } else if (files.code == 401) {
             const err = new Discord.EmbedBuilder()
             .setTitle("API: Invalid API Key")
             .setColor("#FF9494")
