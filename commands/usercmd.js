@@ -5,6 +5,7 @@ const cloud = Cloud({
 	cloudUrl: process.env.cloud_url,
 	apiKey: process.env.api_key
 })
+const md5 = require("md5")
 
 new Command({
 	name: 'user',
@@ -39,6 +40,7 @@ new Command({
                     { name: "Role", value: user.data.role, inline: true},
                     { name: "IP Address", value: user.data.ip || "-", inline: true},
                 ])
+                .setThumbnail("https://www.gravatar.com/avatar/" + md5(user.data.email))
                 .setColor("#5D3FD3")
             ctx.reply({ embeds: [embed], ephemeral: true})
             } else if (user.code == 404) {
