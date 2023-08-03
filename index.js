@@ -10,6 +10,15 @@ Component.setDefaults({
 	} 
 });
 
+// Cloud API
+
+const {Cloud} = require("daneecloud-api")
+const cloud = new Cloud({
+	cloudUrl: process.env.cloud_url,
+	apiKey: process.env.api_key
+})
+
+module.exports.cloud = cloud
 
 // Search for plugins in node_modules (folder names starting with gcommands-plugin-) or plugins folder
 Plugins.search(__dirname);
