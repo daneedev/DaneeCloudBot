@@ -1,10 +1,6 @@
 const { Command, CommandType, Argument, ArgumentType } = require('gcommands');
 const Discord = require("discord.js")
-const {Cloud} = require("daneecloud-api")
-const cloud = Cloud({
-	cloudUrl: process.env.cloud_url,
-	apiKey: process.env.api_key
-})
+const cloud = require("../index.js").cloud;
 
 new Command({
 	name: 'deluser',

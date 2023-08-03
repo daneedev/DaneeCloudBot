@@ -1,11 +1,7 @@
 const { Command, CommandType } = require('gcommands');
 const Discord = require("discord.js")
 const request = require("request")
-const {Cloud} = require("daneecloud-api")
-const cloud = Cloud({
-	cloudUrl: process.env.cloud_url,
-	apiKey: process.env.api_key
-})
+const cloud = require("../index.js").cloud;
 const packages = require("../package.json")
 
 new Command({
