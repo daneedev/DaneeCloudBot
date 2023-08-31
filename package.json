@@ -20,7 +20,7 @@
     "@discordjs/rest": "^2.0.1",
     "axios": "^1.5.0",
     "colors": "^1.4.0",
-    "daneecloud-api": "^2.0.0",
+    "daneecloud-api": "^2.0.1",
     "discord-api-types": "^0.37.55",
     "discord.js": "^14.13.0",
     "dotenv": "^16.3.1",
