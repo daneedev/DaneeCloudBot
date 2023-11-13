@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/DaneeSkripter/DaneeCloudBot#readme",
   "dependencies": {
-    "@discordjs/rest": "^2.0.1",
+    "@discordjs/rest": "^2.1.0",
     "axios": "^1.6.0",
     "colors": "^1.4.0",
     "daneecloud-api": "^2.0.3",
