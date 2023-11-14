@@ -22,7 +22,7 @@
     "colors": "^1.4.0",
     "daneecloud-api": "^2.0.3",
     "discord-api-types": "^0.37.63",
-    "discord.js": "^14.13.0",
+    "discord.js": "^14.14.1",
     "dotenv": "^16.3.1",
     "gcommands": "^10.0.0",
     "md5": "^2.3.0",
