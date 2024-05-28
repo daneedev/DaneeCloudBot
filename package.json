@@ -21,7 +21,7 @@
     "axios": "^1.7.2",
     "colors": "^1.4.0",
     "daneecloud-api": "^2.0.3",
-    "discord-api-types": "^0.37.84",
+    "discord-api-types": "^0.37.86",
     "discord.js": "^14.15.2",
     "dotenv": "^16.4.5",
     "gcommands": "^10.0.0",
